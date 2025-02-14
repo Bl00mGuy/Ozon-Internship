@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/Bl00mGuy/url-shortener/proto/gen/go;proto";
+
+import "google/api/annotations.proto";
+
+service UrlManager {
+  rpc ShortenUrl (UrlShorteningRequest) returns (ShorteningResult) {
+    option (google.api.http) = {
+      post: "/urls/shorten"
+      body: "*"
+    };
+  }
+
+  rpc ExpandUrl (ShortenedUrlRequest) returns (ExpandedUrlResult) {
+    option (google.api.http) = {
+      get: "/urls/{shortened_url}"
+    };
+  }
+}
+
+message UrlShorteningRequest {
+  string original_url = 1;
+}
+
+message ShortenedUrlRequest {
+  string shortened_url = 1;
+}
+
+  message ShorteningResult {
+    string shortened_url = 1;
+  }
+
+message ExpandedUrlResult {
+  string original_url = 1;
+}
